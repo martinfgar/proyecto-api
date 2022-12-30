@@ -7,7 +7,10 @@ use App\Models\Empresa;
 class StocksController extends Controller
 {
     //
-    public function acciones($nombre){
-        return Empresa::where('nombre',$nombre)->first()->stocks->toJson();
+    public function acciones($id){
+        if (!Empresa::find($id)){
+            return response(['message' => 'Not found'],404);
+        }
+        return Empresa::find($id)->stocks->toJson();
     }
 }

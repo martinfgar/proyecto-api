@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\StocksController;
-
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,9 +16,10 @@ use App\Http\Controllers\StocksController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::get('empresas',[EmpresaController::class,'empresas']);
-Route::get('acciones/empresa/{nombre}',[StocksController::class,'acciones']);
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+Route::post('login',[LoginController::class,'login']);
+Route::post('register',[LoginController::class,'register']);
+Route::middleware('auth:api')->get('empresas',[EmpresaController::class,'empresas']);
+Route::middleware('auth:api')->get('acciones/empresa/{id}',[StocksController::class,'acciones']);
