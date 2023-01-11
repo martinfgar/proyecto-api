@@ -19,7 +19,7 @@ class EmpresaSeeder extends Seeder
         DB::table('empresas')->insert([
             ['nombre' => 'Iberdrola'],
             ['nombre' => 'Inditex'],
-            ['nombre' => 'Banco de Santander'],
+            ['nombre' => 'Santander'],
             ['nombre' => 'BBVA'],
             ['nombre' => 'Naturgy'],
             ['nombre' => 'Cellnex'],
