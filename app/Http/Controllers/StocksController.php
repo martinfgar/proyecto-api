@@ -11,6 +11,8 @@ class StocksController extends Controller
         if (!Empresa::find($id)){
             return response(['message' => 'Not found'],404);
         }
-        return Empresa::find($id)->stocks->toJson();
+        return Empresa::find($id)->stocks->map(function ($item,$key){
+            return [\Carbon\Carbon::parse($item->fecha)->valueOf(),$item->valor];
+        })->toJson();
     }
 }
