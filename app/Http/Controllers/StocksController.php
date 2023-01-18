@@ -12,7 +12,7 @@ class StocksController extends Controller
             return response(['message' => 'Not found'],404);
         }
         return Empresa::find($id)->stocks->map(function ($item,$key){
-            return [\Carbon\Carbon::parse($item->fecha)->valueOf(),$item->valor];
+            return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
         })->toJson();
     }
 }
