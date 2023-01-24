@@ -17,12 +17,14 @@ class StocksController extends Controller
     }
     public function accionesHoy($id = false){
         if (!$id){
-            return Empresa::all()->with('stocks')->where('fecha',\Carbon\Carbon::today())->map(function($item,$key){
-                return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
+            return Empresa::with(['stocks' => function($q){$q->where('fecha','>',\Carbon\Carbon::today());}])->get()->mapWithKeys(function($item,$key){
+                return  [$item->id => $item->stocks->map(function($stock,$emptykey){
+                    return [\Carbon\Carbon::parse($stock->fecha)->valueOf(),floatval($stock->valor)];
+                })];
             })->toJson();
         }
-        return Empresa::find($id)->stocks->where('fecha',\Carbon\Carbon::today())->map(function($item,$key){
+        return Empresa::find($id)->stocks->where('fecha','>',\Carbon\Carbon::today())->map(function($item,$key){
             return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
-        })->toJson();
+        })->values()->toJson();
     }
 }
