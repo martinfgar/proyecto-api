@@ -15,6 +15,7 @@ class StocksController extends Controller
             return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
         })->toJson();
     }
+
     public function accionesHoy($id = false){
         if (!$id){
             return Empresa::with(['stocks' => function($q){$q->where('fecha','>',\Carbon\Carbon::today());}])->get()->mapWithKeys(function($item,$key){
@@ -26,5 +27,14 @@ class StocksController extends Controller
         return Empresa::find($id)->stocks->where('fecha','>',\Carbon\Carbon::today())->map(function($item,$key){
             return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
         })->values()->toJson();
+    }
+
+    public function accionesHistoricas($id = false){
+        if (!$id){
+
+        }
+        return Empresa::find($id)->stocks->mapToGroups(function ($item,$key){
+            return [\Carbon\Carbon::parse($item->fecha)->startOfDay() => $item->valor];
+        })->toJson();
     }
 }
