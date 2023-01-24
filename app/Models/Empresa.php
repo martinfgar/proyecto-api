@@ -16,7 +16,7 @@ class Empresa extends Model
     public $timestamps = false;
     
     public function stocks(){
-        return $this->hasMany(Stock::class);
+        return $this->hasMany(Stock::class)->orderBy('fecha');
     }
 
     public function stock(){

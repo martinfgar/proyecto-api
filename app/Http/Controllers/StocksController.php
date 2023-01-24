@@ -15,4 +15,14 @@ class StocksController extends Controller
             return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
         })->toJson();
     }
+    public function accionesHoy($id = false){
+        if (!$id){
+            return Empresa::all()->with('stocks')->where('fecha',\Carbon\Carbon::today())->map(function($item,$key){
+                return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
+            })->toJson();
+        }
+        return Empresa::find($id)->stocks->where('fecha',\Carbon\Carbon::today())->map(function($item,$key){
+            return [\Carbon\Carbon::parse($item->fecha)->valueOf(),floatval($item->valor)];
+        })->toJson();
+    }
 }
