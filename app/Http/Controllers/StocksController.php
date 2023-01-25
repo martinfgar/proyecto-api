@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use App\Models\Stock;
 class StocksController extends Controller
 {
     //
@@ -31,10 +33,17 @@ class StocksController extends Controller
 
     public function accionesHistoricas($id = false){
         if (!$id){
-
+            return Stock::all()->groupBy('empresa_id')->map(function($item){
+                return $item->groupBy(function($groupDates){
+                    return \Carbon\Carbon::parse($groupDates->fecha)->startOfDay()->valueOf();
+                })->map(function($lastDate){return $lastDate[count($lastDate)-1]->valor;});
+            });
         }
-        return Empresa::find($id)->stocks->mapToGroups(function ($item,$key){
-            return [\Carbon\Carbon::parse($item->fecha)->startOfDay() => $item->valor];
+
+        return Empresa::find($id)->stocks->groupBy(function($item){
+            return \Carbon\Carbon::parse($item->fecha)->startOfDay()->valueOf();
+        })->map(function($item){
+            return $item[count($item)-1]->valor;
         })->toJson();
     }
 }
