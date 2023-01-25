@@ -23,5 +23,5 @@ Route::post('login',[LoginController::class,'login']);
 Route::post('register',[LoginController::class,'register']);
 Route::middleware('auth:api')->get('empresas',[EmpresaController::class,'empresas']);
 Route::middleware('auth:api')->get('acciones/empresa/{id}',[StocksController::class,'acciones']);
-Route::/*middleware('auth:api')->*/get('acciones/today/empresa/{id?}',[StocksController::class,'accionesHoy']);
-Route::get('acciones/historico/empresa/{id?}',[StocksController::class,'accionesHistoricas']);
+Route::middleware('auth:api')->get('acciones/today/empresa/{id?}',[StocksController::class,'accionesHoy']);
+Route::middleware('auth:api')->get('acciones/historico/empresa/{id?}',[StocksController::class,'accionesHistoricas']);
