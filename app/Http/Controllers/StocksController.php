@@ -36,14 +36,14 @@ class StocksController extends Controller
             return Stock::all()->groupBy('empresa_id')->map(function($item){
                 return $item->groupBy(function($groupDates){
                     return \Carbon\Carbon::parse($groupDates->fecha)->startOfDay()->valueOf();
-                })->map(function($lastDate){return $lastDate[count($lastDate)-1]->valor;});
+                })->map(function($lastDate,$key){return [$key,floatval($lastDate[count($lastDate)-1]->valor)];})->values();
             })->toJson();
         }
 
         return Empresa::find($id)->stocks->groupBy(function($item){
             return \Carbon\Carbon::parse($item->fecha)->startOfDay()->valueOf();
-        })->map(function($item){
-            return $item[count($item)-1]->valor;
-        })->toJson();
+        })->map(function($item,$key){
+            return [$key,floatval($item[count($item)-1]->valor)];
+        })->values()->toJson();
     }
 }
