@@ -37,7 +37,7 @@ class StocksController extends Controller
                 return $item->groupBy(function($groupDates){
                     return \Carbon\Carbon::parse($groupDates->fecha)->startOfDay()->valueOf();
                 })->map(function($lastDate){return $lastDate[count($lastDate)-1]->valor;});
-            });
+            })->toJson();
         }
 
         return Empresa::find($id)->stocks->groupBy(function($item){
