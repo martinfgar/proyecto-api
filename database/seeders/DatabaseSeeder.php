@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       
+       if (Empresa::all()->count() !=0){
+        return;
+       }
         DB::table('empresas')->insert([
             ['nombre' => 'Iberdrola'],
             ['nombre' => 'Inditex'],
